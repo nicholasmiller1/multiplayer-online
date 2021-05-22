@@ -1,0 +1,16 @@
+{
+    "name": "multiplayer-online",
+    "version": "0.0.1",
+    "description": "building a real-time multiplayer experience online with socketio",
+    "dependencies": {
+        "express": "^4.17.1",
+        "socket.io": "^4.1.2",
+        "socket.io-client": "^4.1.2"
+    },
+    "engines": {
+        "node": "14.15.x"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}
