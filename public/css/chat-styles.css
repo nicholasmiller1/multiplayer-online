@@ -1,10 +1,4 @@
-body {
-  margin: 0;
-  padding-bottom: 3rem;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-#form {
+#chat-form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
   position: fixed;
@@ -17,7 +11,7 @@ body {
   backdrop-filter: blur(10px);
 }
 
-#input {
+#chat-input {
   border: none;
   padding: 0 1rem;
   flex-grow: 1;
@@ -25,11 +19,11 @@ body {
   margin: 0.25rem;
 }
 
-#input:focus {
+#chat-input:focus {
   outline: none;
 }
 
-#form > button {
+#chat-form > button {
   background: #333;
   border: none;
   padding: 0 1rem;
@@ -39,16 +33,16 @@ body {
   color: #fff;
 }
 
-#messages {
+#chat-messages {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-#messages > li {
+#chat-messages > li {
   padding: 0.5rem 1rem;
 }
 
-#messages > li:nth-child(odd) {
+#chat-messages > li:nth-child(odd) {
   background: #efefef;
 }
