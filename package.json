@@ -2,6 +2,8 @@
     "name": "multiplayer-online",
     "version": "0.0.1",
     "description": "building a real-time multiplayer experience online with socketio",
+    "main": "index.js",
+    "author": "Nicholas Miller",
     "dependencies": {
         "express": "^4.17.1",
         "socket.io": "^4.1.2",
