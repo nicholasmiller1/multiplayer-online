@@ -1,4 +1,8 @@
 const socket = io();
+const url = new URL(window.location.href);
+const username = url.searchParams.get('username');
+const roomId = url.searchParams.get('roomId');
+socket.emit('create user', {username, roomId});
 
 const messages = document.getElementById('chat-messages');
 const form = document.getElementById('chat-form');
