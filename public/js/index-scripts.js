@@ -4,7 +4,8 @@ const roomInput = document.getElementById("index-room");
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (nameInput.value && roomInput.value) {
-        window.location.href = "/chat.html?roomId=" + roomInput.value + "&username=" + nameInput.value;
+    if (nameInput && roomInput) {
+        const selectedGame = document.querySelector('input[type="radio"][name="game-select"]:checked').value;
+        window.location.href = "/chat.html?roomId=" + selectedGame + "-" + roomInput.value + "&username=" + nameInput.value;
     }
 });

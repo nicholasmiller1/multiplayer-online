@@ -5,13 +5,41 @@ body {
   height: 100vh;
 }
 
-#index-form {
+#game-select > *,
+#room-select > * {
+  width: fit-content;
+  padding: 10px;
+  margin: 5px auto;
+}
+
+#room-select {
   display: flex;
   flex-direction: column;
 }
 
-#index-form > * {
-  width: fit-content;
-  padding: 10px;
-  margin: 5px auto;
+#game-select {
+  display: flex;
+  flex-direction: row;
+}
+
+#game-select > img {
+  width: 250px;
+  height: 250px;
+  padding: 15px;
+}
+
+[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+[type="radio"] + img {
+  cursor: pointer;
+}
+
+[type="radio"]:checked + img {
+  background-color: #3297fd;
+  box-shadow: 0 0 10px 5px #3297fd;
 }

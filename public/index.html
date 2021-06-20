@@ -9,12 +9,28 @@
 
     <body>
         <form id="index-form" action="">
-            <input id="index-name" placeholder="Name" autocomplete="off" />
-            <input id="index-room" placeholder="Room Name" autocomplete="off" />
-            <button>Create/Join Room</button>
+            <div id="game-select">
+                <label>
+                    <input type="radio" name="game-select" value="tetris">
+                    <img src='./assets/tetris-art.png'>
+                </label>
+                <label>
+                   <input type="radio" name="game-select" value="pong">
+                   <img src='./assets/pong-art.png'>
+                </label>
+                <label>
+                    <input type="radio" name="game-select" value="comingsoon" disabled>
+                    <img src='./assets/comingsoon.png'>
+                </label>
+            </div>
+            <br/>
+            <div id="room-select">
+                <input id="index-name" placeholder="Name" autocomplete="off" />
+                <input id="index-room" placeholder="Room Name" autocomplete="off" />
+                <button>Create/Join Room</button>
+            </div>
         </form>
 
-        <script src="/socket.io/socket.io.js"></script>
         <script src="./js/index-scripts.js"></script>
     </body>
 </html>
