@@ -4,6 +4,13 @@ const username = url.searchParams.get('username');
 const roomId = url.searchParams.get('roomId');
 socket.emit('join room', {username, roomId});
 
+const gameName = roomId.split('-')[0];
+const emptyCanvas = document.getElementsByClassName('canvas')[0];
+emptyCanvas.id = gameName;
+const gameScript = document.createElement('script');
+gameScript.setAttribute('src', `./js/${gameName}-scripts.js`);
+document.body.appendChild(gameScript);
+
 const chatMessages = document.getElementById('chat-messages');
 const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
