@@ -8,20 +8,27 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
+const connectedUsers = [];
+
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
-        const roomItr = socket.rooms.values();
-        roomItr.next();
-        io.to(roomItr.next().value).emit('chat message', msg);
+        const user = connectedUsers.find(x => x.socket === socket);
+        io.to(user.roomId).emit('chat message', msg);
     });
 
-    socket.on('create user', ({username, roomId}) => {
+    socket.on('join room', ({username, roomId}) => {
+        connectedUsers.push({socket: socket, username: username, roomId: roomId});
         socket.join(roomId);
 
         setTimeout(() => {
-            io.to(roomId).emit('chat message', username + " has entered the chat");
+            io.to(roomId).emit('chat message', username + " has joined the game");
         }, 1000)
     });
+
+    socket.on('disconnect', () => {
+        const user = connectedUsers.find(x => x.socket === socket);
+        io.to(user.roomId).emit('chat message', user.username + " has left the game");
+    })
 });
 
 
