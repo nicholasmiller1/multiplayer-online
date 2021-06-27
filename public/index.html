@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Multiplayer Online Framework</title>
 
-        <link rel="stylesheet" type="text/css" href="./css/general-styles.css" />
-        <link rel="stylesheet" type="text/css" href="./css/index-styles.css" />
-    </head>
+<head>
+    <title>Multiplayer Online Framework</title>
 
-    <body>
-        <form id="index-form" action="">
-            <div id="game-select">
-                <label>
-                    <input type="radio" name="game-select" value="tetris">
-                    <img src='./assets/tetris-art.png'>
-                </label>
-                <label>
-                   <input type="radio" name="game-select" value="pong">
-                   <img src='./assets/pong-art.png'>
-                </label>
-                <label>
-                    <input type="radio" name="game-select" value="comingsoon" disabled>
-                    <img src='./assets/comingsoon.png'>
-                </label>
-            </div>
-            <br/>
-            <div id="room-select">
-                <input id="index-name" placeholder="Name" autocomplete="off" />
-                <input id="index-room" placeholder="Room Name" autocomplete="off" />
-                <button>Create/Join Room</button>
-            </div>
-        </form>
+    <link rel="stylesheet" type="text/css" href="./css/general-styles.css" />
+    <link rel="stylesheet" type="text/css" href="./css/index-styles.css" />
+</head>
 
-        <script src="./js/index-scripts.js"></script>
-    </body>
+<body>
+    <form id="index-form" action="">
+        <div id="game-select">
+            <label>
+                <input type="radio" name="game-select" value="tetris" required>
+                <img src='./assets/tetris-art.png'>
+            </label>
+            <label>
+                <input type="radio" name="game-select" value="pong" required>
+                <img src='./assets/pong-art.png'>
+            </label>
+            <label>
+                <input type="radio" name="game-select" value="comingsoon" required disabled>
+                <img src='./assets/comingsoon.png'>
+            </label>
+        </div>
+        <br />
+        <div id="room-select">
+            <input id="index-name" placeholder="Name" autocomplete="off" required />
+            <input id="index-room" placeholder="Room Name" autocomplete="off" required />
+            <button>Create/Join Room</button>
+        </div>
+    </form>
+
+    <script src="./js/index-scripts.js"></script>
+</body>
+
 </html>
