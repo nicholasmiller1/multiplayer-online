@@ -16,6 +16,9 @@ const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const leaveButton = document.getElementById('leave-button');
 
+let localGameData = {};
+let serverGameData = {};
+
 chatForm.addEventListener('submit', (event) => {
     event.preventDefault();
     if (chatInput.value) {
@@ -30,6 +33,14 @@ socket.on('chat message', (msg) => {
     chatMessages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
 });
+
+socket.on('request data', () => {
+    socket.emit('send data', localGameData);
+})
+
+socket.on('broadcast data', (data) => {
+    serverGameData = data;
+})
 
 leaveButton.addEventListener('click', (event) => {
     event.preventDefault();

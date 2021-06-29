@@ -4,6 +4,8 @@ const context = canvas.getContext('2d');
 canvas.width = game.clientWidth * 0.75;
 canvas.height = game.clientHeight * 0.8;
 
+localGameData = {test: "This is a test 1"};
+
 const paddleWidth = 10;
 const paddleHeight = 100;
 

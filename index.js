@@ -25,6 +25,11 @@ io.on('connection', (socket) => {
         }, 1000)
     });
 
+    socket.on('send data', (gameData) => {
+        const user = connectedUsers.find(x => x.socket === socket);
+        socket.to(user.roomId).emit('broadcast data', gameData);
+    })
+
     socket.on('disconnect', () => {
         const user = connectedUsers.find(x => x.socket === socket);
         io.to(user.roomId).emit('chat message', user.username + " has left the game");
@@ -35,3 +40,7 @@ io.on('connection', (socket) => {
 server.listen(process.env.PORT || 3000, () => {
     console.log("server listening on port " + (process.env.PORT || 3000));
 });
+
+setInterval(() => {
+    io.emit('request data');
+}, 1000 / 60)
