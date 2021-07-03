@@ -2,28 +2,23 @@ const game = document.getElementById('game');
 const canvas = document.getElementById('pong');
 const context = canvas.getContext('2d');
 canvas.width = game.clientWidth * 0.75;
-canvas.height = game.clientHeight * 0.8;
-
-localGameData = {test: "This is a test 1"};
+canvas.height = game.clientHeight * 0.95;
 
 const paddleWidth = 10;
 const paddleHeight = 100;
+const userPaddleX = 10;
+const opponentPaddleX = canvas.width - paddleWidth - 10;
+playerMax = 2;
 
-const user = {
-    x: 10,
+localGameData = {
     y: canvas.height / 2 - paddleHeight / 2,
-    width: paddleWidth,
-    height: paddleHeight,
     score: 0
 };
 
-const opponent = {
-    x: canvas.width - paddleWidth - 10,
+serverGameData = {
     y: canvas.height / 2 - paddleHeight / 2,
-    width: paddleWidth,
-    height: paddleHeight,
     score: 0
-}
+};
 
 const ball = {
     x: canvas.width / 2,
@@ -36,9 +31,6 @@ const ball = {
 
 let upKey = false;
 let downKey = false;
-
-let opponentUpKey = false;
-let opponentDownKey = false;
 
 function drawScore(x, y, score) {
     context.fillStyle = "#FFF";
@@ -71,10 +63,10 @@ function render() {
     context.fillRect(canvas.width / 2 - netWidth / 2, 0, netWidth, canvas.height);
 
     // Draw game features
-    drawScore(canvas.width / 4, canvas.height / 6, user.score);
-    drawScore(3 * canvas.width / 4, canvas.height / 6, opponent.score);
-    drawPaddle(user.x, user.y, user.width, user.height);
-    drawPaddle(opponent.x, opponent.y, opponent.width, opponent.height);
+    drawScore(canvas.width / 4, canvas.height / 6, localGameData.score);
+    drawScore(3 * canvas.width / 4, canvas.height / 6, serverGameData.score);
+    drawPaddle(userPaddleX, localGameData.y, paddleWidth, paddleHeight);
+    drawPaddle(opponentPaddleX, serverGameData.y, paddleWidth, paddleHeight);
     drawBall(ball.x, ball.y, ball.radius);
 }
 
@@ -90,10 +82,10 @@ function keyDownHandler(event) {
             downKey = true;
             break;
         case 38:
-            opponentUpKey = true;
+            upKey = true;
             break;
         case 40:
-            opponentDownKey = true;
+            downKey = true;
             break;
     }
 }
@@ -107,10 +99,10 @@ function keyUpHandler(event) {
             downKey = false;
             break;
         case 38:
-            opponentUpKey = false;
+            upKey = false;
             break;
         case 40:
-            opponentDownKey = false;
+            downKey = false;
             break;
     }
 }
@@ -126,8 +118,8 @@ function reset() {
 
 function collisionDetect(player, ball) {
     player.top = player.y;
-    player.right = player.x + player.width;
-    player.bottom = player.y + player.height;
+    player.right = player.x + paddleWidth;
+    player.bottom = player.y + paddleHeight;
     player.left = player.x;
 
     ball.top = ball.y - ball.radius;
@@ -140,10 +132,10 @@ function collisionDetect(player, ball) {
 
 function update() {
     // move user paddle
-    if (upKey && user.y > 0) {
-        user.y -= 8;
-    } else if (downKey && (user.y < canvas.height - user.height)) {
-        user.y += 8;
+    if (upKey && localGameData.y > 0) {
+        localGameData.y -= 8;
+    } else if (downKey && (localGameData.y < canvas.height - paddleHeight)) {
+        localGameData.y += 8;
     }
 
     // Check ball wall collision
@@ -152,12 +144,7 @@ function update() {
     }
 
     if (ball.x + ball.radius >= canvas.width) {
-        user.score += 1;
-        reset();
-    }
-
-    if (ball.x - ball.radius <= 0) {
-        opponent.score += 1;
+        localGameData.score += 1;
         reset();
     }
 
@@ -166,25 +153,28 @@ function update() {
     ball.y += ball.velocityY;
 
     // move opponent paddle
-    if (opponentUpKey && opponent.y > 0) {
-        opponent.y -= 8;
-    } else if (opponentDownKey && (opponent.y < canvas.height - opponent.height)) {
-        opponent.y += 8;
-    }
+    // Handled by opponent client and received through socket
 
     // Check paddle collision
-    let player = (ball.x < canvas.width / 2) ? user : opponent;
+    let player = {};
+    if (ball.x < canvas.width / 2) {
+        player = localGameData;
+        player.x = userPaddleX;
+    } else {
+        player = serverGameData;
+        player.x = opponentPaddleX;
+    }
 
     if (collisionDetect(player, ball)) {
         let angle = 0;
 
-        if (ball.y < (player.y + player.height / 2)) {
+        if (ball.y < (player.y + paddleHeight / 2)) {
             angle = -1 * Math.PI / 4
-        } else if (ball.y > (player.y + player.height / 2)) {
+        } else if (ball.y > (player.y + paddleHeight / 2)) {
             angle = Math.PI / 4;
         }
 
-        ball.velocityX = (player === user ? 1 : -1) * ball.speed * Math.cos(angle);
+        ball.velocityX = (player === localGameData ? 1 : -1) * ball.speed * Math.cos(angle);
         ball.velocityY = ball.speed * Math.sin(angle);
 
         ball.speed += 0.2;

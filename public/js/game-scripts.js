@@ -11,27 +11,32 @@ const gameScript = document.createElement('script');
 gameScript.setAttribute('src', `./js/${gameName}-scripts.js`);
 document.body.appendChild(gameScript);
 
+const chat = document.getElementById('chat')
 const chatMessages = document.getElementById('chat-messages');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
 const leaveButton = document.getElementById('leave-button');
+const roomIdDisplay = document.getElementById('room-id');
+const playerDisplay = document.getElementById('player-count');
+roomIdDisplay.innerHTML = "Room Id: " + roomId.split('-')[1];
 
 let localGameData = {};
 let serverGameData = {};
+let playerMax = 0;
+let currentUsers = 0;
 
-chatForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    if (chatInput.value) {
-        socket.emit('chat message', chatInput.value);
-        chatInput.value = '';
+socket.on('user update', ({msg, numOfUsers}) => {
+    if (numOfUsers > playerMax) {
+        if (currentUsers === 0) {
+            window.location.href = "/?alert=room-full";
+        }
+    } else {
+        currentUsers = numOfUsers;
+        playerDisplay.innerHTML = `Players: ${currentUsers}/${playerMax}`;
+
+        const item = document.createElement('li');
+        item.textContent = msg;
+        chatMessages.appendChild(item);
+        chat.scrollTop = chat.scrollHeight;
     }
-});
-
-socket.on('chat message', (msg) => {
-    const item = document.createElement('li');
-    item.textContent = msg;
-    chatMessages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
 });
 
 socket.on('request data', () => {

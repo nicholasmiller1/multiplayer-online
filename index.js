@@ -11,18 +11,14 @@ app.get('/', (req, res) => {
 const connectedUsers = [];
 
 io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-        const user = connectedUsers.find(x => x.socket === socket);
-        io.to(user.roomId).emit('chat message', msg);
-    });
-
     socket.on('join room', ({username, roomId}) => {
         connectedUsers.push({socket: socket, username: username, roomId: roomId});
         socket.join(roomId);
 
+        let currentUsers = io.of("/").adapter.rooms.get(roomId);
         setTimeout(() => {
-            io.to(roomId).emit('chat message', username + " has joined the game");
-        }, 1000)
+            io.to(roomId).emit('user update', {msg: username + " has joined the game", numOfUsers: currentUsers ? currentUsers.size : 0});
+        }, 100)
     });
 
     socket.on('send data', (gameData) => {
@@ -32,7 +28,8 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         const user = connectedUsers.find(x => x.socket === socket);
-        io.to(user.roomId).emit('chat message', user.username + " has left the game");
+        let currentUsers = io.of("/").adapter.rooms.get(user.roomId);
+        io.to(user.roomId).emit('user update', {msg: user.username + " has left the game", numOfUsers: currentUsers ? currentUsers.size : 0});
     })
 });
 

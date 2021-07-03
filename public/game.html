@@ -8,6 +8,10 @@
     </head>
 
     <body>
+        <div id="room-info">
+            <h3 id="room-id">Room Id: </h3>
+            <h3 id="player-count">Players: 0/0</h3>
+        </div>
         <button id="leave-button" onclick="leaveRoom">Leave Room</button>
 
         <div id="game">
@@ -16,10 +20,6 @@
 
         <div id="chat">
             <ul id="chat-messages"></ul>
-            <form id="chat-form" action="">
-                <input id="chat-input" autocomplete="off" />
-                <button>Send</button>
-            </form>
         </div>
 
         <script src="/socket.io/socket.io.js"></script>

@@ -1,11 +1,24 @@
 #game {
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: 85vh;
   z-index: 0;
   background-color: rgb(230, 230, 230);
   justify-content: center;
   align-items: center;
+}
+
+#room-info {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 5px;
+  left: 10px;
+  z-index: 1;
+}
+
+#room-info > h3 {
+  margin: 5px;
 }
 
 button#leave-button {
@@ -16,47 +29,16 @@ button#leave-button {
   z-index: 1;
 }
 
-#chat-form {
-  background: rgba(0, 0, 0, 0.15);
-  padding: 0.25rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  height: 3rem;
-  box-sizing: border-box;
-  backdrop-filter: blur(10px);
-}
-
-#chat-input {
-  border: none;
-  padding: 0 1rem;
-  flex-grow: 1;
-  border-radius: 2rem;
-  margin: 0.25rem;
-}
-
-#chat-input:focus {
-  outline: none;
-}
-
-#chat-form > button {
-  background: #333;
-  border: none;
-  padding: 0 1rem;
-  margin: 0.25rem;
-  border-radius: 3px;
-  outline: none;
-  color: #fff;
-}
-
 #chat {
   display: block;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 5px inset rgb(128, 128, 128);
   width: 100%;
-  height: fit-content;
+  height: 15vh;
   z-index: 1;
   bottom: 0;
+  overflow-y: scroll;
 }
 
 #chat-messages {
@@ -64,13 +46,13 @@ button#leave-button {
   margin: 0;
   padding: 0;
   bottom: 0;
-  display: none;
 }
 
 #chat-messages > li {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
+  background-color: #efefef;
 }
 
 #chat-messages > li:nth-child(odd) {
-  background: #efefef;
+  background-color: #b7b7b7;
 }
