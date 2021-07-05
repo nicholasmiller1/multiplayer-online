@@ -36,6 +36,10 @@ socket.on('user update', ({msg, numOfUsers}) => {
         item.textContent = msg;
         chatMessages.appendChild(item);
         chat.scrollTop = chat.scrollHeight;
+
+        if (currentUsers === playerMax) {
+            setInterval(gameLoop, 1000 / 60);
+        }
     }
 });
 

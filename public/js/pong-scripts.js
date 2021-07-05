@@ -186,4 +186,4 @@ function gameLoop() {
     render();
 }
 
-setInterval(gameLoop, 1000 / 60);
+render();
