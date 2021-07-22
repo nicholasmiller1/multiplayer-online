@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-const connectedUsers = [];
+let connectedUsers = [];
 
 io.on('connection', (socket) => {
     socket.on('join room', ({username, roomId}) => {
@@ -21,15 +21,15 @@ io.on('connection', (socket) => {
         }, 100)
     });
 
-    socket.on('send data', (gameData) => {
-        const user = connectedUsers.find(x => x.socket === socket);
-        socket.to(user.roomId).emit('broadcast data', gameData);
-    })
-
     socket.on('disconnect', () => {
         const user = connectedUsers.find(x => x.socket === socket);
         let currentUsers = io.of("/").adapter.rooms.get(user.roomId);
         io.to(user.roomId).emit('user update', {msg: user.username + " has left the game", numOfUsers: currentUsers ? currentUsers.size : 0});
+    })
+
+    socket.on('state update', (gameState) => {
+        const user = connectedUsers.find(x => x.socket === socket);
+        socket.to(user.roomId).emit('state update', gameState);
     })
 });
 
@@ -37,7 +37,3 @@ io.on('connection', (socket) => {
 server.listen(process.env.PORT || 3000, () => {
     console.log("server listening on port " + (process.env.PORT || 3000));
 });
-
-setInterval(() => {
-    io.emit('request data');
-}, 1000 / 60)

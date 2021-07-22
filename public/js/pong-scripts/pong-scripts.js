@@ -3,12 +3,12 @@ const canvas = document.getElementById('pong');
 const context = canvas.getContext('2d');
 canvas.width = game.clientWidth * 0.75;
 canvas.height = game.clientHeight * 0.95;
+playerMax = 2;
 
 const paddleWidth = 10;
 const paddleHeight = 100;
 const userPaddleX = 10;
 const opponentPaddleX = canvas.width - paddleWidth - 10;
-playerMax = 2;
 
 localGameData = {
     y: canvas.height / 2 - paddleHeight / 2,

@@ -5,7 +5,7 @@ const roomInput = document.getElementById("index-room");
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     const selectedGame = document.querySelector('input[type="radio"][name="game-select"]:checked').value;
-    window.location.href = "/game.html?roomId=" + selectedGame + "-" + roomInput.value + "&username=" + nameInput.value;
+    window.location.href = `/${selectedGame}.html?roomId=${selectedGame}-${roomInput.value}&username=${nameInput.value}`;
 });
 
 const url = new URL(window.location.href);

@@ -12,10 +12,10 @@
             <h3 id="room-id">Room Id: </h3>
             <h3 id="player-count">Players: 0/0</h3>
         </div>
-        <button id="leave-button" onclick="leaveRoom">Leave Room</button>
+        <button id="leave-button">Leave Room</button>
 
         <div id="game">
-            <canvas class="canvas"></canvas>
+            <canvas id="pong"></canvas>
         </div>
 
         <div id="chat">
@@ -24,5 +24,6 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="./js/game-scripts.js"></script>
+        <script src="./js/pong-scripts.js"></script>
     </body>
 </html>
