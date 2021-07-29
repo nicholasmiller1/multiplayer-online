@@ -2,6 +2,7 @@ class Player {
     constructor(tetris) {
         this.DROP_SLOW = 1000;
         this.DROP_FAST = 50;
+        this.PIECES = ['I','L','J','O','T','S','Z'];
 
         this.events = new Events;
 
@@ -11,6 +12,7 @@ class Player {
         this.dropCounter = 0;
         this.dropInterval = this.DROP_SLOW;
 
+        this.pieceBag = shuffle(this.PIECES);
         this.pos = {x: 0, y: 0};
         this.matrix = null;
         this.score = 0;
@@ -88,8 +90,12 @@ class Player {
     }
 
     reset() {
-        const pieces = 'ILJOTSZ';
-        this.matrix = this.createPiece(pieces[pieces.length * Math.random() | 0]);
+        if (this.pieceBag === undefined || this.pieceBag.length === 0) {
+            this.pieceBag = shuffle(this.PIECES);
+        }
+        console.log(this.pieceBag);
+        this.matrix = this.createPiece(this.pieceBag.pop());
+
         this.pos.y = 0;
         this.pos.x = (this.arena.matrix[0].length / 2 | 0) - (this.matrix[0].length / 2 | 0);
         if (this.arena.collide(this)) {
@@ -145,3 +151,23 @@ class Player {
         }
     }
 }
+
+function shuffle(array) {
+    let tempArray = [...array];
+    let currentIndex = array.length
+    let randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [tempArray[currentIndex], tempArray[randomIndex]] = [
+        tempArray[randomIndex], tempArray[currentIndex]];
+    }
+  
+    return tempArray;
+  }

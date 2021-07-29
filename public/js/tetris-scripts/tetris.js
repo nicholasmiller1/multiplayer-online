@@ -12,7 +12,7 @@ class Tetris {
         });
 
         this.colors = [
-            null,
+            '#FFFFFF',
             '#FF0D72',
             '#0DC2FF',
             '#0DFF72',
@@ -50,7 +50,11 @@ class Tetris {
                 if (value !== 0) {
                     this.context.fillStyle = this.colors[value];
                     this.context.fillRect(x + offset.x, y + offset.y, 1, 1);
-                }
+                } 
+                // else {
+                //     this.context.strokeStyle = this.colors[value];
+                //     this.context.strokeRect(x + offset.x, y + offset.y, 1, 1);
+                // }
             });
         });
     }
@@ -80,6 +84,6 @@ class Tetris {
     }
 
     updateScore(score) {
-        this.element.querySelector('.score').innerText = score;
+        this.element.querySelector('.score').innerText = "Score: " + score;
     }
 }

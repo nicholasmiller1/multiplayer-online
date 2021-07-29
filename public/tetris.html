@@ -6,29 +6,11 @@
         <link rel="stylesheet" type="text/css" href="./css/general-styles.css" />
         <link rel="stylesheet" type="text/css" href="./css/game-styles.css" />
 
-        <!-- <style>
-            body {
-                background: #000;
-                display: flex;
-                color: #fff;
-                font-family: sans-serif;
-                font-size: 2em;
-                text-align: center;
-            }
-
-            .player {
-                flex: 1 1 auto;
-            }
-
-            .player.local canvas {
-                border-color: #fff;
-            }
-
+        <style>
             canvas {
-                border: solid .2em #707070;
-                height: 80vh;
+                margin: 15px;
             }
-        </style> -->
+        </style>
     </head>
 
     <body>
@@ -38,7 +20,10 @@
         </div>
         <button id="leave-button" onclick="leaveRoom">Leave Room</button>
 
-        <div id="game">
+        <div id="waiting-screen">
+            <h1 id="waiting-text">Waiting for players...</h1>
+        </div>
+        <div id="game" class="waiting">
             <template id="player-template">
                 <div class="player">
                     <div class="score"></div>
