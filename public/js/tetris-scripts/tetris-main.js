@@ -51,7 +51,7 @@ const updatePlayers = (playerCount) => {
 
 const keyListener = (event) => {
     [
-        [65, 68, 81, 69, 83],
+        [65, 68, 81, 69, 83, 32],
     ].forEach((key, index) => {
         const player = gameLocal.player;
         if (event.type === 'keydown') {
@@ -63,6 +63,8 @@ const keyListener = (event) => {
                 player.rotate(-1);
             } else if (event.keyCode === key[3]) {
                 player.rotate(1);
+            } else if (event.keyCode === key[5]) {
+                player.holdPiece();
             }
         }
 
@@ -73,7 +75,7 @@ const keyListener = (event) => {
                     player.dropInterval = player.DROP_FAST;
                 }
             } else {
-                player.dropInterval = player.DROP_SLOW;
+                player.dropInterval = player.dropSpeed;
             }
         }
     });

@@ -9,15 +9,19 @@ class Player {
         this.tetris = tetris;
         this.arena = tetris.arena;
 
+        this.dropSpeed = this.DROP_SLOW;
         this.dropCounter = 0;
-        this.dropInterval = this.DROP_SLOW;
+        this.dropInterval = this.dropSpeed;
+
+        this.heldPiece = null;
+        this.holdAvailability = true;
 
         this.pieceBag = shuffle(this.PIECES);
         this.pos = {x: 0, y: 0};
         this.matrix = null;
         this.score = 0;
 
-        this.reset();
+        this.reset(true);
     }
 
     createPiece(type) {
@@ -72,9 +76,13 @@ class Player {
         if (this.arena.collide(this)) {
             this.pos.y--;
             this.arena.merge(this);
-            this.reset();
+            this.reset(true);
             this.score += this.arena.sweep();
             this.events.emit('score', this.score);
+
+            this.dropSpeed = (Math.exp(-this.score / 100 * 0.25)) * this.DROP_SLOW;
+            this.dropInterval = this.dropSpeed;
+            console.log(this.dropInterval)
             return;
         }
         this.events.emit('pos', this.pos);
@@ -89,23 +97,47 @@ class Player {
         this.events.emit('pos', this.pos);
     }
 
-    reset() {
-        if (this.pieceBag === undefined || this.pieceBag.length === 0) {
-            this.pieceBag = shuffle(this.PIECES);
+    reset(newPiece) {
+        if (newPiece) {
+            if (this.pieceBag === undefined || this.pieceBag.length === 0) {
+                this.pieceBag = shuffle(this.PIECES);
+            }
+            this.matrix = this.createPiece(this.pieceBag.pop());
+            this.holdAvailability = true;
         }
-        console.log(this.pieceBag);
-        this.matrix = this.createPiece(this.pieceBag.pop());
 
         this.pos.y = 0;
         this.pos.x = (this.arena.matrix[0].length / 2 | 0) - (this.matrix[0].length / 2 | 0);
         if (this.arena.collide(this)) {
             this.arena.clear();
             this.score = 0;
+            this.heldPiece = null;
+            this.holdAvailability = true;
             this.events.emit('score', this.score);
         }
 
+        this.dropSpeed = this.DROP_SLOW;
+        this.dropInterval = this.dropSpeed;
+
         this.events.emit('pos', this.pos);
         this.events.emit('matrix', this.matrix);
+    }
+
+    holdPiece() {
+        if (this.holdAvailability) {
+            if (this.heldPiece === null) {
+                this.heldPiece = this.matrix;
+                this.reset(true);
+                this.holdAvailability = false;
+                return;
+            }
+
+            const temp = this.matrix;
+            this.matrix = this.heldPiece;
+            this.heldPiece = temp;
+            this.reset(false);
+            this.holdAvailability = false;
+        }
     }
 
     rotate(dir) {
